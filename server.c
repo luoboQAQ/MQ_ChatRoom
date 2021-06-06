@@ -1,6 +1,6 @@
 #include "mq.h"
 
-int mian()
+int main()
 {
     Client_Number = 0;
     New_Client_Flag = 0;
@@ -10,7 +10,7 @@ int mian()
 
     while (1)
     {
-        if (msgrcv(PUBLIC_MQ, &Client_to_Server, sizeof(Client_to_Server), 0, MSG_NOERROR | IPC_NOWAIT) > 0)
+        if (msgrcv(PublicMQ, &Client_to_Server, sizeof(Client_to_Server), 0, MSG_NOERROR | IPC_NOWAIT) != -1)
         {
             printf("Client Pid is : %d\n", Client_to_Server.client_pid);
             printf("Client Message is : %s", Client_to_Server.mtext);
@@ -20,7 +20,7 @@ int mian()
             {
                 printf("This is a new client!\n");
                 New_Client_Flag = 1;
-                Store_Private_FIFO_Name();
+                Store_Private_MQ_Name();
             }
 
             //如果客户端退出，则删除消息队列
@@ -33,11 +33,17 @@ int mian()
                 printf("Closed Client_%d Private MQ\n", Client_to_Server.client_pid);
                 printf("Client Number is : %d\n\n", Client_Number);
             }
+
+            //由服务端向客户端发送消息
+            Server_Send_Message();
         }
         else
         {
-            printf("Read Data Error!\n");
-            exit(1);
+            if (errno != ENOMSG)
+            {
+                perror("msgrcv");
+                exit(1);
+            }
         }
     }
     return 0;
