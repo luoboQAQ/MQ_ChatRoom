@@ -15,7 +15,6 @@ int main()
     //客户端和服务器握手
     Client_Write_Data(!IS_PARENT, -1);
     Client_Read_Data();
-    Client_to_Server.mtype = DEFAULT_MSG;
 
     //fork出两个进程来保持连接
     if ((pid = fork()) < 0)
@@ -29,6 +28,7 @@ int main()
         while (1)
         {
             fgets(Client_to_Server.mtext, 60, stdin);
+            Client_to_Server.mtype = DEFAULT_MSG;
             Client_to_Server.client_pid = getpid();
             Private_Chat_Filter_By_Name(Client_to_Server.mtext);
             Client_Write_Data(IS_PARENT, pid);

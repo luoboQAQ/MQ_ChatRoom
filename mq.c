@@ -118,27 +118,29 @@ void Client_Write_Data(int Process, int Child_PID)
 {
 
     PublicMQ = Open_MQ(PUBLIC_MQ);
+    //捕获退出命令
+    if (strcmp(Client_to_Server.mtext, "quit\n") == 0)
+        Client_to_Server.mtype = CLIENT_QUIT;
 
     //发送消息
     if ((msgsnd(PublicMQ, &Client_to_Server, sizeof(Client_to_Server), IPC_NOWAIT)) == -1)
         printf("Fail to write client data\n");
     usleep(200000);
 
-    /* Client exits communication */
-    // if (strcmp(Client_to_Server.message, CLIENT_QUIT) == 0)
-    // {
-    //     printf("Client_%d exit\n", Client_to_Server.client_pid);
-    //     printf("Removed %s\n", Private_FIFO_Name);
+    //客户端退出
+    if (Client_to_Server.mtype == CLIENT_QUIT)
+    {
+        printf("Client_%d exit\n", Client_to_Server.client_pid);
 
-    //     /* When the parent process calls the function, kill the child process */
-    //     if (Process)
-    //     {
-    //         kill(Child_PID, SIGSTOP);
-    //         usleep(1000);
-    //         printf("Child process has been stoped\n");
-    //     }
-    //     exit(0);
-    // }
+        //当是父进程唤起时，杀死子进程
+        if (Process)
+        {
+            kill(Child_PID, SIGSTOP);
+            usleep(1000);
+            printf("Child process has been stoped\n");
+        }
+        exit(0);
+    }
 }
 
 //客户端接收消息
@@ -203,4 +205,13 @@ void Private_Chat_Filter_By_Name(char *Client_Message)
         strcpy(Client_to_Server.target_name, BROADCAST_TO_ALL);
         strcpy(Client_to_Server.mtext, Client_Message);
     }
+}
+
+//注册服务端的SIGINT
+void Server_Sigcatch(int num)
+{
+    printf("\nServer is exiting...\n");
+    msgctl(PublicMQ, IPC_RMID, NULL);
+    printf("Removed PublicMQ:%d\nSee you again 😉\n\n", PublicMQ);
+    exit(0);
 }

@@ -5,6 +5,12 @@ int main()
     Client_Number = 0;
     New_Client_Flag = 0;
 
+    if (signal(SIGINT, &Server_Sigcatch) == SIG_ERR)
+    {
+        perror("signal");
+        exit(1);
+    }
+
     //打开公共消息队列
     PublicMQ = Open_MQ(PUBLIC_MQ);
 

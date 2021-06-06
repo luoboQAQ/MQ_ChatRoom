@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <signal.h>
 #include <sys/types.h>
 #include <sys/ipc.h>
 #include <sys/msg.h>
@@ -38,6 +39,7 @@ void Client_Read_Data(void);
 void Show_Local_Time(void);
 void Private_Chat_Filter_By_Name(char *Client_Message);
 void Client_Write_Data(int Process, int Child_PID);
+void Server_Sigcatch(int num);
 
 int New_Client_Flag;
 int Quit_Flag;
