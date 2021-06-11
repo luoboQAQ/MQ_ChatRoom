@@ -19,6 +19,7 @@
 #define DEFAULT_MSG 1
 #define IS_NEW_CLIENT 2
 #define CLIENT_QUIT 3
+#define CLIENT_QUIT_TEXT "quit\n"
 #define BROADCAST_TO_ALL "Broadcast"
 #define PRIVATE_MSG_HEADER "@"
 

@@ -119,7 +119,7 @@ void Client_Write_Data(int Process, int Child_PID)
 
     PublicMQ = Open_MQ(PUBLIC_MQ);
     //捕获退出命令
-    if (strcmp(Client_to_Server.mtext, "quit\n") == 0)
+    if (strcmp(Client_to_Server.mtext, CLIENT_QUIT_TEXT) == 0)
         Client_to_Server.mtype = CLIENT_QUIT;
 
     //发送消息
