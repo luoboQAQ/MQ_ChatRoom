@@ -61,6 +61,11 @@ void Server_Send_Message(void)
             if (strcmp(Client_to_Server.target_name, Client_Name_Box[target_count]) == 0)
                 break;
         }
+        if (target_count >= Client_Number)
+        {
+            printf("[Warning]Target Client not found!\n");
+            return;
+        }
         //找到发送者客户端
         for (source_count = 0; source_count < Client_Number; source_count++)
         {
