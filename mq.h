@@ -12,16 +12,16 @@
 #include <time.h>
 #include <errno.h>
 
-#define IS_PARENT 1
-#define PUBLIC_MQ 10
-#define MAX_Client_Number 6
-#define MAX_CLIENT_NAME_LEN 30
-#define DEFAULT_MSG 1
-#define IS_NEW_CLIENT 2
-#define CLIENT_QUIT 3
-#define CLIENT_QUIT_TEXT "quit\n"
-#define BROADCAST_TO_ALL "Broadcast"
-#define PRIVATE_MSG_HEADER "@"
+#define IS_PARENT 1                  //是否为父进程
+#define PUBLIC_MQ 10                 //公共消息队列编号
+#define MAX_Client_Number 6          //客户端数量的最大值
+#define MAX_CLIENT_NAME_LEN 30       //客户端姓名的最大长度
+#define DEFAULT_MSG 1                //默认消息
+#define IS_NEW_CLIENT 2              //客户端上线消息
+#define CLIENT_QUIT 3                //客户端下线消息
+#define CLIENT_QUIT_TEXT "quit\n"    //用户退出命令
+#define BROADCAST_TO_ALL "Broadcast" //群聊消息的标记
+#define PRIVATE_MSG_HEADER "@"       //私聊消息的关键字
 
 struct msgbuf
 {
